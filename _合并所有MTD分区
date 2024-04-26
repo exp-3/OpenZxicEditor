@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# 设置工作目录为当前脚本所在目录
+cd "$(dirname "\$0")"
+
+# 设置环境变量，便于调用二进制
+#export PATH="$PWD/__lib__/bin:$PATH"
+
+# 接收拖拽路径，这里我们假设脚本作为命令行参数传递
+file="\$1"
+
+# 合并所有MTD为全镜像
+if [ -e "$file" ]; then
+    # 使用拖拽路径
+    lua __lib__/mtdjoin.lua "$file"
+elif [ -d "MTDs" ]; then
+    # 使用经典路径
+    lua __lib__/mtdjoin.lua "MTDs"
+else
+    # 没有拖拽文件，将会提示用户如何使用
+    echo "使用方法："
+    echo "1. 直接将源文件夹作为参数传递给这个脚本"
+    echo "2. 将源文件夹放到当前目录下，并重命名为MTDs"
+    echo ""
+    echo "支持类型："
+    echo "1. 名称以z.开头的工程文件夹，由一键解包工具生成"
+    echo "2. 内含全部mtd分区文件的文件夹，通常是adb提取产生的"
+    echo ""
+fi
+
+# 暂停以等待用户输入
+read -p "按ENTER键继续..." any_key

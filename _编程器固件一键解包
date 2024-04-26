@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# 设置工作目录为当前脚本所在目录
+cd "$(dirname "\$0")"
+
+# 设置环境变量，便于调用二进制
+#export PATH="$PWD/__lib__/bin:$PATH"
+
+# 接收拖拽路径或命令行参数
+file="\$1"
+# 检查文件是否存在
+if [ ! -f "$file" ]; then
+    # 没有拖拽文件，将会提示用户输入路径
+    echo "Please drag and drop a file or specify a file path."
+    read -p "Enter the file path: " file
+fi
+
+# 使用传入的文件路径
+lua __lib__/mtdcut.lua "$file"
+
+# 再解包各个分区
+lua __lib__/mtdunpk.lua
+
+# 重命名项目文件夹
+lua __lib__/prjmove.lua
+
+# 等待用户输入以退出
+read -p "按ENTER键继续..." any_key
