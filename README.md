@@ -1,12 +1,17 @@
-# OpenZfwEdit
+<div align="center">
 
-## 一个 POSIX 兼容的 ufiStudio ZXIC-RomKit 开源分支
+<h1 align="center">OpenZfwEdit</h1>
+
+**一个 POSIX 兼容的 ufiStudio ZXIC-RomKit 开源分支**
+
+</div>
 
 ---
 
 ## 简介
 
 可以一键解包和打包 zxic 编程器固件的工具。
+
 附带 MTD 分区的拆分和合并功能。
 
 ## 使用方法
