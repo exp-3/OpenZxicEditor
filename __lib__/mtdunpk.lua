@@ -41,7 +41,7 @@ local jffs2_symlink_warning = ""
 local function unpack(mtd, type)
     log("=====================================")
     if type == "squashfs" then -- squashfs
-        local cmd = string.format("unsquashfs -d %s %s", mtd .. "_unpacked", mtd)
+        local cmd = string.format("unsquashfs -d \"%s\" \"%s\"", mtd .. "_unpacked", mtd)
         log(exec(cmd))
         print("已解包squashfs分区：" .. mtd)
     elseif type == "jffs2" then -- jffs2
@@ -53,12 +53,12 @@ local function unpack(mtd, type)
         end
         ejs:close()
         -- 解包
-        local cmd = string.format("jefferson %s -d %s", mtd, file_path .. "tmp" .. mtd)
+        local cmd = string.format("jefferson \"%s\" -d \"%s\"", mtd, file_path .. "tmp" .. mtd)
         local o = exec(cmd .. " 2>&1")
         if o:find("symlink") then -- 出现软连接错误
             print("已跳过jffs2分区：" .. mtd)
             jffs2_symlink_warning = jffs2_symlink_warning .. mtd .. "\r\n"
-            os.execute("rm -rf " .. file_path .. "tmp" .. mtd) -- 删除解包文件夹
+            os.execute("rm -rf \"" .. file_path .. "tmp" .. mtd .. "\"") -- 删除解包文件夹
         else
             log(o)
             -- os.rename(file_path .. "tmp/fs_1", mtd .. "_unpacked") -- 重命名解包文件夹

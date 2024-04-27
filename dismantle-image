@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# 设置工作目录为当前所在目录
+cd "$(dirname "\$0")"
+
+# 设置环境变量，便于调用二进制
+#export PATH="$PWD/__lib__/bin:$PATH"
+
+# 接收命令行参数
+file="\$1"
+# 检查文件是否存在
+if [ ! -f "$file" ]; then
+    # 没有找到文件，将会提示用户如何使用
+    echo "用途：从完整编程器固件中分拆出各分区并创建工程文件夹"
+    echo "用法：将源文件路径作为第一个参数传入"
+else
+    # 分割传入的文件
+    lua __lib__/mtdcut.lua "$file"
+    echo ""
+    echo "分拆完成，请使用 unpack-mtd 工具进一步解包各分区"
+fi

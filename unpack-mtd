@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# 设置工作目录为当前所在目录
+cd "$(dirname "\$0")"
+
+# 接收拖拽路径或命令行参数
+#file="\$1"
+file="MTDs"
+
+# 检查文件是否存在
+if [ ! -f "$file" ]; then
+    echo 用途：解包工程文件夹中的所有mtd分区，必需要有json清单
+    echo 用法：将工程文件夹放到当前目录下并重命名为MTDs，然后运行此程序
+else
+    # 解包各个分区
+    lua __lib__/mtdunpk.lua
+    # 重命名项目文件夹
+    lua __lib__/prjmove.lua
+fi
