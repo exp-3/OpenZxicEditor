@@ -25,13 +25,15 @@ dismantle-image <image-path.bin>
 解包后的文件会放在名称以`z.`开头的工程文件夹中。
 
 > [!NOTE]
-> 编程器固件拆分依赖mtdcut组件，但它不开源，所以本功能暂不可用。正在与ufiStudio开发者协商如何解决这个问题。
+> 编程器固件拆分依赖mtdcut组件，但它不开源，导致本功能暂不可用。
+> 
+> 正在与ufiStudio开发者积极协商如何解决这个问题。
 
 ### 分区解包
 ```shell
-unpack-mtd <project-path.tree>
+unpack-mtd
 ```
-解包现有工程文件夹里的各分区。
+解包现有工程文件夹里的各分区。需要先将工程文件夹复制到同目录，并重命名为`MTDs`，再运行工具。
 
 目前您可以使用Windows系统中的ufiStudio创建工程文件夹，删除所有解包内容(不通用)，然后复制到Linux/Unix系统中使用此工具解包。
 
@@ -41,7 +43,7 @@ repack-mtd <project-path.tree>
 ```
 打包现有工程文件夹里被解包的各分区。新生成的分区文件以`_new`结尾。
 
-解包数据与Windows中的ufiStudio不通用，只能重新打包Linux/Unix下解包的文件夹。
+解包数据与Windows中的ufiStudio不通用，只能重新打包Linux/Unix下生成的解包文件夹。
 
 ### 分区合并
 ```shell
