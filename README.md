@@ -1,6 +1,6 @@
 <div align="center">
 
-<h1 align="center">OpenZfwEdit</h1>
+<h1 align="center">OpenZxicEditor</h1>
 
 **一个 POSIX 兼容的 ufiStudio ZXIC-RomKit 开源分支**
 
@@ -10,7 +10,7 @@
 
 ## 简介
 
-可以一键解包和打包 zxic 编程器固件的工具。
+一键解包和打包 zxic 编程器固件的工具。
 
 附带 MTD 分区的拆分和合并功能。
 
@@ -27,7 +27,7 @@ dismantle-image <image-path.bin>
 > [!NOTE]
 > 编程器固件拆分依赖mtdcut组件，但它不开源，导致本功能暂不可用。
 > 
-> 正在与ufiStudio开发者积极协商如何解决这个问题。
+> 正积极地与ufiStudio开发者商议如何解决这个问题。
 
 ### 分区解包
 ```shell
