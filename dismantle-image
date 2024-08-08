@@ -1,13 +1,21 @@
 #!/bin/bash
 
-# 设置工作目录为当前所在目录
-cd "$(dirname "\$0")"
+# 获取脚本所在路径
+get_script_dir() {
+    local script_path="$0"
+    if [ "${script_path:0:1}" != "/" ]; then
+        script_path="$(command -v readlink >/dev/null 2>&1 && { readlink -f "$script_path" || :; } || { realpath "$script_path" || :; } || echo "$PWD/$script_path")"
+    fi
+    local script_dir="$(dirname "$script_path")"
+    echo "$script_dir"
+}
 
-# 设置环境变量，便于调用二进制
-#export PATH="$PWD/__lib__/bin:$PATH"
+# 设置工作目录为所在目录
+cd "$(get_script_dir)"
 
 # 接收命令行参数
-file="\$1"
+file="$1"
+
 # 检查文件是否存在
 if [ ! -f "$file" ]; then
     # 没有找到文件，将会提示用户如何使用
@@ -15,7 +23,7 @@ if [ ! -f "$file" ]; then
     echo "用法：将源文件路径作为第一个参数传入"
 else
     # 分割传入的文件
-    lua __lib__/mtdcut.lua "$file"
+    lua __lib__/mtdcut-nonfree.lua "$file"
     echo ""
     echo "分拆完成，请使用 unpack-mtd 工具进一步解包各分区"
 fi
