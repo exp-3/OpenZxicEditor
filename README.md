@@ -31,7 +31,7 @@
 
 ## 使用方法
 
-### 一键解包（新上线）
+### 一键解包（新功能）
 
 ```shell
 ./dismantle-image <image-path.bin>
