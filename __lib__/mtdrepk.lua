@@ -88,24 +88,17 @@ local function repack(mtd, type, erase, size)
         -- 获取过滤器
         cmd = string.format("unsquashfs -s \"%s\" | grep \"Filters selected\"", mtd)
         filter = exec(cmd)
-        filter = filter:match(".*ilters selected. (%w+)") or "U-ERR" -- armthumb
+        filter = filter:match(".*ilters selected. (%w+)") or "armthumb"
         -- 获取字典大小
         cmd = string.format("unsquashfs -s \"%s\" | grep \"Dictionary size\"", mtd)
         dict = exec(cmd)
-        dict = dict:match(".*ictionary size.? (%d+)") or "U-ERR" -- 262144
+        dict = dict:match(".*ictionary size.? (%d+)") or block
         -- 测试结果输出
         log("压缩方式：" .. comp .. "，块大小：" .. block .. "，过滤器：" .. filter ..
                 "，字典大小：" .. dict)
         cmd = string.format(
-            "mksquashfs \"%s\" \"%s\" -comp %s -noappend -b %s -no-xattrs -always-use-fragments -all-root",
-            mtd .. "_unpacked", mtd .. "_new", comp, block)
-        -- 看情况添加一些老版本mksquashfs可能不支持的参数
-        if filter ~= "U-ERR" then
-            cmd = cmd .. " -Xbcj " .. filter
-        end
-        if dict ~= "U-ERR" then
-            cmd = cmd .. " -Xdict-size " .. dict
-        end
+            "mksquashfs \"%s\" \"%s\" -comp %s -noappend -b %s -no-xattrs -always-use-fragments -all-root -Xbcj %s -Xdict-size %s",
+            mtd .. "_unpacked", mtd .. "_new", comp, block, filter, dict)
         log(exec(cmd .. " 2>&1"))
         print("已打包squashfs分区：" .. mtd)
     elseif type == "jffs2" then -- jffs2
