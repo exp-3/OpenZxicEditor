@@ -66,25 +66,53 @@ local function repack(mtd, type, erase, size)
     -- 打包
     log("=====================================")
     if type == "squashfs" then -- squashfs
-        local cmd, comp, block
+        log("获取原文件参数信息：")
+        log(exec(string.format("unsquashfs -s \"%s\"", mtd)))
+        local cmd, comp, block, filter, dict
+        -- 获取压缩方法
         cmd = string.format("unsquashfs -s \"%s\" | grep Compression", mtd)
         comp = exec(cmd)
-        log(comp) -- 测试输出
         comp = comp:match("Compression (%w+)") or "xz"
+        -- 获取块大小
         cmd = string.format("unsquashfs -s \"%s\" | grep Block", mtd)
         block = exec(cmd)
-        log(block) -- 测试输出
         block = block:match("Block size (%d+)") or "262144"
-        log("压缩方式：" .. comp .. "，块大小：" .. block)
+        -- 获取过滤器
+        cmd = string.format("unsquashfs -s \"%s\" | grep \"Filters selected\"", mtd)
+        filter = exec(cmd)
+        filter = filter:match(".*ilters selected. (%w+)") or "U-ERR" -- armthumb
+        -- 获取字典大小
+        cmd = string.format("unsquashfs -s \"%s\" | grep \"Dictionary size\"", mtd)
+        dict = exec(cmd)
+        dict = dict:match(".*ictionary size.? (%d+)") or "U-ERR" -- 262144
+        -- 测试结果输出
+        log("压缩方式：" .. comp .. "，块大小：" .. block .. "，过滤器：" .. filter ..
+                "，字典大小：" .. dict)
         cmd = string.format(
             "mksquashfs \"%s\" \"%s\" -comp %s -noappend -b %s -no-xattrs -always-use-fragments -all-root",
             mtd .. "_unpacked", mtd .. "_new", comp, block)
+        -- 看情况添加一些老版本mksquashfs可能不支持的参数
+        if filter ~= "U-ERR" then
+            cmd = cmd .. " -Xbcj " .. filter
+        end
+        if dict ~= "U-ERR" then
+            cmd = cmd .. " -Xdict-size " .. dict
+        end
         log(exec(cmd .. " 2>&1"))
         print("已打包squashfs分区：" .. mtd)
     elseif type == "jffs2" then -- jffs2
         local cmd = string.format("mkfs.jffs2 -d \"%s\" -o \"%s\" -X lzo --pagesize=0x800 --eraseblock=%s -l -n -q -v",
             mtd .. "_unpacked", mtd .. "_new", erase)
-        log(exec(cmd .. " 2>nul"))
+        log(exec(cmd .. " 2>err.tmp"))
+        -- 读取错误输出内容
+        local f = io.open("err.tmp", "r")
+        local err = f:read("*a")
+        f:close()
+        os.remove("err.tmp")
+        if err:find("error!") or err:find("error ") then -- 检测是否有错误
+            print("错误：打包jffs2分区" .. mtd .. "时似乎出现了一些问题\n" .. err)
+        end
+        log(err)
         print("已打包jffs2分区：" .. mtd)
     else -- 其他
         print("已跳过" .. type .. "分区：" .. mtd)
@@ -103,7 +131,7 @@ local function repack(mtd, type, erase, size)
             os.exit()
         end
         if new_size < size then
-            log("填充字节：" .. (size - new_size))
+            log("填充空字节：" .. (size - new_size))
             fill(mtd .. "_new", size)
         end
     end

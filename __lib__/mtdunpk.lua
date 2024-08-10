@@ -3,7 +3,17 @@ print("版权所有 (C) 2024 ufiTech Developers. 保留所有权利。")
 print("=====================================")
 
 local json = require("__lib__.json")
-local file_path = "MTDs/"
+local file_path
+-- 获取输入文件路径
+local args = {...}
+if #args > 0 then
+    file_path = args[1]
+    if string.sub(file_path, -1) ~= "/" then
+        file_path = file_path .. "/"
+    end
+else
+    file_path = "MTDs/"
+end
 
 local log = function(msg)
     -- 初始化日志函数
@@ -37,8 +47,8 @@ local function exec(cmd)
     f:close()
     return s
 end
-local jffs2_symlink_warning = ""
-local function unpack(mtd, type)
+
+local function unpack(mtd, type, imageName)
     log("=====================================")
     if type == "squashfs" then -- squashfs
         local cmd = string.format("unsquashfs -d \"%s\" \"%s\"", mtd .. "_unpacked", mtd)
@@ -53,19 +63,11 @@ local function unpack(mtd, type)
         end
         ejs:close()
         -- 解包
-        local cmd = string.format("jefferson \"%s\" -d \"%s\"", mtd, file_path .. "tmp" .. mtd)
+        local cmd = string.format("jefferson \"%s\" -d \"%s\"", mtd, file_path .. "/" .. imageName .. "_unpacked")
         local o = exec(cmd .. " 2>&1")
-        if o:find("symlink") then -- 出现软连接错误
-            print("已跳过jffs2分区：" .. mtd)
-            jffs2_symlink_warning = jffs2_symlink_warning .. mtd .. "\r\n"
-            os.execute("rm -rf \"" .. file_path .. "tmp" .. mtd .. "\"") -- 删除解包文件夹
-        else
-            log(o)
-            -- os.rename(file_path .. "tmp/fs_1", mtd .. "_unpacked") -- 重命名解包文件夹
-            -- os.execute("rm -rf " .. file_path .. "tmp" .. mtd) -- 删除临时文件夹
-            print("已解包jffs2分区：" .. mtd)
-        end
-    else -- 其他
+        log(o)
+        print("已解包jffs2分区：" .. mtd)
+    else -- 其他类型
         print("已忽略" .. type .. "分区：" .. mtd)
     end
 end
@@ -84,16 +86,7 @@ end
 -- 遍历分区表，解包各分区
 for i, partition in ipairs(partition_data) do
     local target_file = file_path .. partition.file
-    unpack(target_file, partition.fst)
-end
-
-if jffs2_symlink_warning ~= "" then
-    print("=====================================")
-    print("请注意：以下jffs2分区中包含软连接：")
-    print(jffs2_symlink_warning)
-    print("暂不支持在Windows系统中处理此问题，故已自动跳过解包")
-    print("jffs2在设备内部是可读写的，因此建议开adb后直接编辑")
-    print("如有能力，也可以使用Linux系统直接挂载分区进行修改")
+    unpack(target_file, partition.fst, partition.file)
 end
 
 print("=====================================")

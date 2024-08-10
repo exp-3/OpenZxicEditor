@@ -13,17 +13,27 @@ get_script_dir() {
 # 设置工作目录为所在目录
 cd "$(get_script_dir)"
 
-# 接收拖拽路径或命令行参数
-#file="\$1"
-file="MTDs"
+# 接收命令行参数路径
+file="$1"
 
-# 检查文件是否存在
-if [ ! -d "$file" ]; then
-    echo 用途：解包工程文件夹中的所有mtd分区，必需要有json清单
-    echo 用法：将工程文件夹放到当前目录下并重命名为MTDs，然后运行此程序
-else
-    # 解包各个分区
+# 解包各个分区
+if [ -d "$file" ]; then
+    # 使用参数路径
+    lua __lib__/mtdunpk.lua "$file"
+elif [ -d "MTDs" ]; then
+    # 使用默认路径
     lua __lib__/mtdunpk.lua
-    # 重命名项目文件夹
-    lua __lib__/prjmove.lua
+else
+    # 找不到文件，显示提示
+    echo "工具用途："
+    echo "解包工程文件夹中的所有mtd分区，必需要有json清单"
+    echo ""
+    echo "使用方法："
+    echo "将名为z.*的工程文件夹路径作为第一个参数传入"
+    echo "或者 将工程文件夹放在同目录下并重命名为MTDs"
+    echo ""
+    exit
 fi
+
+# 重命名项目文件夹
+lua __lib__/prjmove.lua
