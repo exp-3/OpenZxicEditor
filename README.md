@@ -34,7 +34,7 @@
 ### 一键解包（新上线）
 
 ```shell
-dismantle-image <image-path.bin>
+./dismantle-image <image-path.bin>
 ```
 
 把编程器固件拆分为分区文件并解包。
@@ -42,45 +42,59 @@ dismantle-image <image-path.bin>
 解包后的文件会放在名称以`z.`开头的工程文件夹中。
 
 > [!NOTE]
-> 编程器固件拆分依赖 mtdcut 组件，但它不开源，因此属于 nonfree 组件。
->
+> 编程器固件拆分依赖 mtdcut 组件，但它不开源，因此属于 nonfree 组件。<br>
 > OpenZxicEditor 已取得分发权并默认附带。如果您反感此行为，请自行将其删除。
 
 ### 分区解包
 
 ```shell
-unpack-mtd
+./unpack-mtd <project-path/>?
 ```
 
-解包现有工程文件夹里的各分区。需要先运行 dismantle-image 或者将工程文件夹复制到同目录，并重命名为`MTDs`，再运行工具。
+解包现有工程文件夹里的各分区。
+
+需要先运行 dismantle-image 或者将工程文件夹复制到同目录，再运行工具。
+
+如果未通过参数输入工程文件夹路径，则会使用默认值`MTDs`。
 
 ### 分区打包
 
 ```shell
-repack-mtd <project-path.tree>
+./repack-mtd <project-path/>?
 ```
 
 打包现有工程文件夹里被解包的各分区。新生成的分区文件以`_new`结尾。
 
-解包数据与 Windows 中的 ufiStudio 不通用，只能重新打包 Linux/Unix 下生成的解包文件夹。
+解包数据与 Windows 中的 ufiStudio 不通用，请在 Linux/Unix 环境中生成`*_unpacked`解包文件夹。
+
+如果未通过参数输入工程文件夹路径，则会使用默认值`MTDs`。
+
+> [!NOTE]
+> 如果打包 jffs2 分区时遇到`Permission denied`问题，可以使用 sudo 提权运行./repack-mtd 。
 
 ### 分区合并
 
 ```shell
-merge-mtd <project-path.tree>
+./merge-mtd <project-path/>?
 ```
 
 只将各 MTD 分区合并为编程器固件。
 
 支持导入 ufiStudio 解包生成的带 json 的工程文件夹，也支持 ADB 提取的纯 MTDs（mtd`%d`）。
 
+如果未通过参数输入工程文件夹路径，则会使用默认值`MTDs`。
+
 ### 一键打包
 
 ```shell
-rebuild-image <project-path.tree>
+./rebuild-image <project-path/>?
 ```
 
 打包所有解包的分区，并重新整合成编程器固件。
+
+解包数据与 Windows 中的 ufiStudio 不通用，请在 Linux/Unix 环境中生成`*_unpacked`解包文件夹。
+
+如果未通过参数输入工程文件夹路径，则会使用默认值`MTDs`。
 
 打包后将在对应工程文件夹中生成新的编程器映像文件`full_new.bin`。
 
