@@ -6,7 +6,7 @@
 
 ## GNU Affero General Public License / GNU Affero通用公共许可证
 
-version 3.0, 19 November 2007
+version 3.0, 2007年11月19日
 
 第三版 2007年11月19日
 
