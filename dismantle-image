@@ -32,5 +32,6 @@ else
     # 分割传入的文件
     lua __lib__/mtdcut-nonfree.luac "$file"
     echo ""
-    echo "分拆完成，请使用 unpack-mtd 工具进一步解包各分区"
+    # echo "分拆完成，请使用 unpack-mtd 工具进一步解包各分区"
+    . ./unpack-mtd
 fi

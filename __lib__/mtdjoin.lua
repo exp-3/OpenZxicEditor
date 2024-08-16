@@ -131,6 +131,6 @@ else -- 旧版mtd分区文件格式
 end
 
 print("=====================================")
-print("导入完成")
+print("导入完成，\n文件位于：" .. tostring(file_out))
 print(" ")
 
