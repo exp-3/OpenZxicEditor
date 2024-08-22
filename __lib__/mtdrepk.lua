@@ -102,8 +102,8 @@ local function repack(mtd, type, erase, size)
         log(exec(cmd .. " 2>&1"))
         print("已打包squashfs分区：" .. mtd)
     elseif type == "jffs2" then -- jffs2
-        local cmd = string.format("mkfs.jffs2 -d \"%s\" -o \"%s\" -X lzo --pagesize=0x800 --eraseblock=%s -l -n -q -v",
-            mtd .. "_unpacked", mtd .. "_new", erase)
+        local cmd = string.format("mkfs.jffs2 -d \"%s\" -o \"%s\" -X lzo --pagesize=0x1000 --eraseblock=%s -l -n -q -v",
+            mtd .. "_unpacked", mtd .. "_new", erase) -- 之前页大小是0x800，一些rootfs打包出来总是太大
         log(exec(cmd .. " 2>err.tmp"))
         -- 读取错误输出内容
         local f = io.open("err.tmp", "r")
