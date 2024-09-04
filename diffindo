@@ -1,0 +1,175 @@
+#!/bin/bash
+
+# OpenZxicEditor
+# 版权所有 (C) 2024 MiFi~Lab & OpenZxicEditor Developers.
+
+# 本程序是自由软件：您可以基于自由软件基金会发布的GNU Affero通用公共许可证的条款下重新分发和/或修改它，或者本许可证第三版或者（由您选择）任何后续版本。
+# 分发本程序是希望它能派上用场，但没有任何担保，甚至也没有对其适销性或特定目的适用性的默示担保。更多细节请参见“GNU Affero通用公共许可证”。
+# 您应该已收到本程序随附的GNU Affero通用公共许可证的副本。如未收到，请参见：http://www.gnu.org/licenses/ 。
+
+# 获取脚本所在路径
+get_script_dir() {
+    local script_path="$0"
+    if [ "${script_path:0:1}" != "/" ]; then
+        script_path="$(command -v readlink >/dev/null 2>&1 && { readlink -f "$script_path" || :; } || { realpath "$script_path" || :; } || echo "$PWD/$script_path")"
+    fi
+    local script_dir="$(dirname "$script_path")"
+    echo "$script_dir"
+}
+
+# 设置工作目录为所在目录
+cd "$(get_script_dir)"
+
+func="$1"
+file="$2"
+
+dm() {
+    # 解包各个分区
+    if [ -d "$file" ]; then
+        # 使用参数路径
+        lua __lib__/mtdunpk.lua "$file"
+    elif [ -d "MTDs" ]; then
+        # 使用默认路径
+        lua __lib__/mtdunpk.lua
+    else
+        # 找不到文件，显示提示
+        echo "工具用途："
+        echo "解包工程文件夹中的所有mtd分区，必需要有json清单"
+        echo ""
+        echo "使用方法："
+        echo "将名为z.*的工程文件夹路径作为路径参数传入"
+        echo "或者 将工程文件夹放在同目录下并重命名为MTDs"
+        echo ""
+        exit
+    fi
+    # 重命名项目文件夹
+    lua __lib__/prjmove.lua
+    # end
+    exit
+}
+
+di() {
+    # 检查文件是否存在
+    if [ ! -f "$file" ]; then
+        # 没有找到文件，将会提示用户如何使用
+        echo "用途：从完整编程器固件中分拆出各分区，但不解包"
+        echo "用法：将源文件路径作为路径参数传入"
+    else
+        # 分割传入的文件
+        lua __lib__/mtdcut-nonfree.luac "$file"
+    fi
+    exit
+}
+
+da() {
+    # 检查文件是否存在
+    if [ ! -f "$file" ]; then
+        # 没有找到文件，将会提示用户如何使用
+        echo "用途：从完整编程器固件中分拆出各分区并解包导出工程"
+        echo "用法：将源文件路径作为路径参数传入"
+    else
+        # 分割传入的文件
+        lua __lib__/mtdcut-nonfree.luac "$file"
+        echo ""
+        # echo "分拆完成，请使用 unpack-mtd 工具进一步解包各分区"
+        dm
+    fi
+    exit
+}
+
+cm() {
+    # 先打包 再合并
+    if [ -d "$file" ]; then
+        # 使用参数路径
+        lua __lib__/mtdrepk.lua "$file"
+    elif [ -d "MTDs" ]; then
+        # 使用经典路径
+        lua __lib__/mtdrepk.lua "MTDs"
+    else
+        # 没有找到文件，将会提示用户如何使用
+        echo "工具用途："
+        echo "重新打包工程文件夹中所有已解包的mtd分区"
+        echo ""
+        echo "使用方法："
+        echo "将名为z.*的工程文件夹路径作为路径参数传入"
+        echo "或者 将工程文件夹放在同目录下并重命名为MTDs"
+        echo ""
+    fi
+    exit
+}
+
+ci() {
+    # 合并所有MTD为全镜像
+    if [ -e "$file" ]; then
+        # 使用拖拽路径
+        lua __lib__/mtdjoin.lua "$file"
+    elif [ -d "MTDs" ]; then
+        # 使用经典路径
+        lua __lib__/mtdjoin.lua "MTDs"
+    else
+        # 没有找到文件，将会提示用户如何使用
+        echo "工具用途："
+        echo "合并各mtd分区，生成完整的编程器固件"
+        echo ""
+        echo "使用方法："
+        echo "1. 直接将源文件夹作为路径参数传入"
+        echo "2. 将源文件夹放到当前目录下，并重命名为MTDs"
+        echo ""
+        echo "支持类型："
+        echo "1. 名称以z.开头的工程文件夹，由 dismantle-image 工具生成"
+        echo "2. 内含全部mtd分区文件的文件夹，通常是adb提取产生的"
+        echo ""
+    fi
+    exit
+}
+
+ca() {
+    # 先打包 再合并
+    if [ -d "$file" ]; then
+        # 使用拖拽路径
+        lua __lib__/mtdrepk.lua "$file"
+        lua __lib__/mtdjoin.lua "$file"
+    elif [ -d "MTDs" ]; then
+        # 使用经典路径
+        lua __lib__/mtdrepk.lua "MTDs"
+        lua __lib__/mtdjoin.lua "MTDs"
+    else
+        # 没有找到文件，将会提示用户如何使用
+        echo "工具用途："
+        echo "一键重新打包工程文件夹中解包的分区，并导出完整编程器固件"
+        echo "等同于 依次运行 repack-mtd 和 merge-mtd"
+        echo ""
+        echo "使用方法："
+        echo "将名为z.*的工程文件夹路径作为路径参数传入"
+        echo "或者 将工程文件夹放在同目录下并重命名为MTDs"
+        echo ""
+    fi
+}
+
+if [ "$func" = "-d" ]; then
+    da
+elif [ "$func" = "-dm" ]; then
+    dm
+elif [ "$func" = "-di" ]; then
+    di
+elif [ "$func" = "-c" ]; then
+    ca
+elif [ "$func" = "-cm" ]; then
+    cm
+elif [ "$func" = "-ci" ]; then
+    ci
+else
+    echo 用法: ./diffindo [选项] [路径]
+    echo 可用于解包或打包ZXIC路由器固件。
+    echo
+    echo 当前版本支持以下操作选项：
+    echo -e "\t -d \t 完全解包编程器固件中的文件"
+    echo -e "\t -c \t 将解包文件打包成编程器固件"
+    echo -e "\t -di \t 只从编程器固件中提前分区"
+    echo -e "\t -dm \t 从提取的分区中解包出文件"
+    echo -e "\t -cm \t 将解包出的文件制作成分区"
+    echo -e "\t -ci \t 所有分区合并为编程器固件"
+    echo
+    echo 每个参数具体使用方法可以使用 ./diffindo [选项] --help 查看。
+    echo
+fi
