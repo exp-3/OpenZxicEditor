@@ -1,5 +1,5 @@
 -- OpenZxicEditor
--- 版权所有 (C) 2024 ufiTech & OpenZxicEditor Developers. 
+-- 版权所有 (C) 2024 MiFi~Lab & OpenZxicEditor Developers. 
 -- 
 -- 本程序是自由软件：您可以基于自由软件基金会发布的GNU Affero通用公共许可证的条款下重新分发和/或修改它，或者本许可证第三版或者（由您选择）任何后续版本。    
 -- 分发本程序是希望它能派上用场，但没有任何担保，甚至也没有对其适销性或特定目的适用性的默示担保。更多细节请参见“GNU Affero通用公共许可证”。    
@@ -7,7 +7,7 @@
 --
 --
 print("ufiStudio ZXIC MTD解包工具")
-print("版权所有 (C) 2024 ufiTech Developers. 保留所有权利。")
+print("版权所有 (C) 2024 MiFi~Lab Developers. 保留所有权利。")
 print("=====================================")
 
 local json = require("__lib__.json")
@@ -63,14 +63,7 @@ local function unpack(mtd, type, imageName)
         log(exec(cmd))
         print("已解包squashfs分区：" .. mtd)
     elseif type == "jffs2" then -- jffs2
-        -- 检测是否存在--enable-jffs2文件
-        local ejs = io.open("__lib__/--enable-jffs2", "r")
-        if not ejs then
-            print("已忽略jffs2分区：" .. mtd)
-            return
-        end
-        ejs:close()
-        -- 解包
+        -- 解包jffs2
         local cmd = string.format("jefferson \"%s\" -d \"%s\"", mtd, file_path .. "/" .. imageName .. "_unpacked")
         local o = exec(cmd .. " 2>&1")
         log(o)
