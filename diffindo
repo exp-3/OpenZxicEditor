@@ -81,10 +81,10 @@ cm() {
     # 先打包 再合并
     if [ -d "$file" ]; then
         # 使用参数路径
-        lua __lib__/mtdrepk.lua "$file"
+        sudo lua __lib__/mtdrepk.lua "$file"
     elif [ -d "MTDs" ]; then
         # 使用经典路径
-        lua __lib__/mtdrepk.lua "MTDs"
+        sudo lua __lib__/mtdrepk.lua "MTDs"
     else
         # 没有找到文件，将会提示用户如何使用
         echo "工具用途："
@@ -101,7 +101,7 @@ cm() {
 ci() {
     # 合并所有MTD为全镜像
     if [ -e "$file" ]; then
-        # 使用拖拽路径
+        # 使用参数路径
         lua __lib__/mtdjoin.lua "$file"
     elif [ -d "MTDs" ]; then
         # 使用经典路径
@@ -126,12 +126,12 @@ ci() {
 ca() {
     # 先打包 再合并
     if [ -d "$file" ]; then
-        # 使用拖拽路径
-        lua __lib__/mtdrepk.lua "$file"
+        # 使用参数路径
+        sudo lua __lib__/mtdrepk.lua "$file"
         lua __lib__/mtdjoin.lua "$file"
     elif [ -d "MTDs" ]; then
         # 使用经典路径
-        lua __lib__/mtdrepk.lua "MTDs"
+        sudo lua __lib__/mtdrepk.lua "MTDs"
         lua __lib__/mtdjoin.lua "MTDs"
     else
         # 没有找到文件，将会提示用户如何使用
