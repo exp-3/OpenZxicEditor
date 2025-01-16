@@ -2,7 +2,7 @@
 
 <h1 align="center">OpenZxicEditor</h1>
 
-**一个 POSIX 兼容的 ufiStudio ZXIC-RomKit 开源分支**
+**一个 POSIX 兼容的 Mifi~Studio ZXIC-RomKit 开源分支**
 
 </div>
 
