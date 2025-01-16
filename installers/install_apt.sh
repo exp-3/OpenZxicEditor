@@ -34,6 +34,7 @@ echo ===== 安装依赖...
 sudo apt install -y coreutils curl squashfs-tools mtd-utils
 pipx reinstall jefferson
 pipx install jefferson
+pipx ensurepath
 echo
 
 echo ===== 设置属性...
