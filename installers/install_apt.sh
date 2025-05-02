@@ -9,16 +9,19 @@
 
 echo ===== 检查路径...
 if [ -f ./installers/install_apt.sh ]; then
+    echo 很好，无需切换目录。
 elif [ -f ./install_apt.sh ]; then
     cd ../
+    echo 已经找到了项目路径并成功切换。
 else
+    # 不知道运行在什么鬼地方，退出安装
     echo "当前运行路径错误！请在OpenZxicEditor的所在目录下运行此安装脚本！"
     exit 1
 fi
 echo
 
-echo ===== 获取权限...
-sudo echo 提权成功!
+echo ===== 提升权限...
+sudo echo 已成功获取ROOT权限!
 echo
 
 echo ===== 刷新仓库...
@@ -26,8 +29,9 @@ sudo apt update
 sudo apt upgrade -y
 echo
 
-echo ===== 安装环境...
+echo ===== 准备环境...
 sudo apt install -y lua5.4 python3 python3-pip pipx
+sudo apt autoclean
 echo
 
 echo ===== 安装依赖...
