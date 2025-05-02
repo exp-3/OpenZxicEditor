@@ -30,14 +30,14 @@ sudo apt upgrade -y
 echo
 
 echo ===== 准备环境...
-sudo apt install -y lua5.4 python3 python3-pip pipx
+sudo apt install -y ./installers/.packages/cstruct.deb
+sudo apt install -y ./installers/.packages/lzallright.deb
+sudo apt install -y ./installers/.packages/jefferson.deb
 echo
 
 echo ===== 安装依赖...
-sudo apt install -y coreutils curl squashfs-tools mtd-utils
-pipx reinstall jefferson
-pipx install jefferson
-pipx ensurepath
+sudo apt install -y ./installers/.packages/dependencies.deb
+sudo apt-mark auto python3-cstruct python3-lzallright python3-jefferson
 echo
 
 echo ===== 设置属性...
