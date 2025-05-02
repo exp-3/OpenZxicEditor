@@ -5,7 +5,7 @@
 -- Homepage: http://json.luaforge.net/
 -- Version: 0.9.20
 -- This module is released under the The GNU General Public License (GPL).
--- Please see LICENCE.txt for details.
+-- Please see http://www.gnu.org/licenses/ for details.
 --
 -- USAGE:
 -- This module exposes two functions:
