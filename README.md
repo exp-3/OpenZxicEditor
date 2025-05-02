@@ -8,6 +8,10 @@
 
 ---
 
+#### For English documentation or detatiled information, please refer to [DeepWiki](https://deepwiki.com/exp-3/OpenZxicEditor).
+
+---
+
 ## 简介
 
 一键解包和打包 zxic 烧录器固件的工具。
