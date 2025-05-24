@@ -8,7 +8,7 @@
 
 ---
 
-#### For English documentation or detatiled information, please refer to [DeepWiki](https://deepwiki.com/exp-3/OpenZxicEditor).
+#### For English documentation or detatiled information, please refer to [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/exp-3/OpenZxicEditor).
 
 ---
 
