@@ -1,0 +1,6 @@
+zxic-romkit是mifi-lab的私有软件，未通过任何协议开放源代码授权。
+而OpenZxicEditor是前者的开源复刻实现，绝大部分是重写的，代码并不一致。
+
+您的仓库中似乎是为zxic-romkit开发的某种补丁，
+而且也不包含romkit或者OpenZxicEditor的源代码，
+因此请不要使用OpenZxicEditor的名义，建议改为zxic-romkit-patch或类似项目名称。
