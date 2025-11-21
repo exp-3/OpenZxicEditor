@@ -1,0 +1,3 @@
+jefferson
+requests
+pillow
