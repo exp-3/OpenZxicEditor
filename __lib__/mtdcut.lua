@@ -1,6 +1,6 @@
 print([[
 OpenZxicEditor
-版权所有 (C) 2024-2025 MiFi~Lab & OpenZxicEditor Developers. 
+版权所有 (C) 2024-2025 MiFi~Lab & TEFR & OpenZxicEditor Developers. 
 
 本程序是自由软件：您可以基于自由软件基金会发布的GNU Affero通用公共许可证的条款下重新分发和/或修改它，或者本许可证第三版或者（由您选择）任何后续版本。
 分发本程序是希望它能派上用场，但没有任何担保，甚至也没有对其适销性或特定目的适用性的默示担保。更多细节请参见“GNU Affero通用公共许可证”。
@@ -86,7 +86,7 @@ local Vf24PB3e=wz2m3hs7
 local BvpREdBW=string.find(Vf24PB3e,utf8.char((function()
 local t={8,0,0,0}
 return table.unpack(t) end)())) or 25
-BvpREdBW=BvpREdBW+8
+if BvpREdBW > 136 then BvpREdBW = 33 else BvpREdBW=BvpREdBW+8 end
 local TCEPVkk7=string.find(Vf24PB3e,utf8.char((function()
 local t={100,100,114,0,0,0,0,0}
 return table.unpack(t) end)()),BvpREdBW)-1
