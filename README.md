@@ -2,7 +2,7 @@
 
 <h1 align="center">OpenZxicEditor</h1>
 
-**一个 POSIX 兼容的 Mifi~Studio ZXIC-RomKit 开源分支**
+**一个 POSIX 兼容的 ZXIC 设备固件编辑器**
 
 </div>
 
@@ -89,5 +89,9 @@
 
 1. 本项目的开发目的是研究 ZXIC 路由的固件格式，并希望为爱好者学习提供便利。
 2. 目前仅确认支持 ZX7520v3 芯片平台的固件，其他固件格式可能存在差异，请自行研究。
-3. ufiStudio 系列软件 (含 OpenZxicEditor) 现已完全由 MiFi~Lab 独立维护。即日起不再通过 ufitech 或 uficlub 发布。
+3. OpenZxicEditor 现已完全由社区独立维护。即日起不再通过第三方渠道发布。
 4. 欢迎各位用户和开发者提出建议，协助完善本项目。
+
+## 特别声明
+- 某名为 OpenZxicEditor-For-Windows 的仓库与 OpenZxicEditor 无任何关联。事实上它是基于同类闭源软件 ufiStudio 二次破解的。我们对这种冒名顶替、疑似侵权的伪开源表示谴责，请不要使用这种来历不明的软件以免造成不必要的损失。
+- 最近某项目几乎完全“复刻”了 OpenZxicEditor 的代码，结构和实现几乎完全一致，显然未遵循净室开发流程、也未注明参考资料来源。本项目并非使用了放弃署名权的许可证发布，因此我们认为这是一种侵权行为，特此在此声明。
