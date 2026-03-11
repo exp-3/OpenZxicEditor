@@ -1,67 +1,54 @@
 <div align="center">
-<h1 align="center">CWHelper</h1>
 
-### Your Best Your Pocket WiFi Assistant 
+<h1 align="center">OpenZxicEditor</h1>
+
+**一个 POSIX 兼容的 ZXIC 设备固件编辑器**
 
 </div>
 
-## Introduce 
-CWHelper's designed for Pocket WiFi community，Including many useful features，
+---
 
-It supported many kinds of devices just like ZTE \ SPRD \ ASR.
+#### For English documentation or detatiled information, please refer to [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/exp-3/OpenZxicEditor).
 
-Main Features：
+---
 
- · Open ADB、UART or other debug mode only via webpage.
- 
- · Get device info and partitions info from zte or others.
- 
- · Easy to modify device info and config.
- 
- · Flash MTD4 partition.
- 
- · Included drivers for windows.
+## 简介
 
-## Supported Platform
+一键解包和打包 zxic 烧录器固件的工具。
 
-Windows only now.
-Linux version is developing.
+附带 MTD 分区的拆分和合并功能。
 
-> [!NOTE]
-> Because of cmd of Windows 7 / 8 / 8.1 is too old and not support color.So we do not supports those system.<br>
-> If u wanna run this tool on those system, contact me via email or give a issue.
+## 使用方法
 
-## Usage
+### 解包和打包
 
-### ① Clone the code
-```shell
-git clone https://github.com/ColdWindScholar/CWHelper?tab=readme-ov-file
-```
+把烧录器固件拆分为分区文件并解包。
 
-### ② Install python3 and run.
- * For Windows
+解包后的文件会放在名称以`z.`开头的工程文件夹中。
 
-   Go to [python](https://python.org) to download the latest version.
+然后可修改解包的文件，最后重新打包。
 
+## 注意事项
 
- * For Linux
-```shell
-sudo apt install python3-full
-```
+1. 此程序尚不完善，可能存在一些问题，欢迎提出建议。
+2. 开发时已留意了空格和中文路径的问题，但如果遇到迷惑 bug 可以尝试将文件放到简单路径下再试。
+3. 软件会解包所有受支持的分区类型。如果某分区不需要修改，那么建议删除相应的解包文件夹，合并时将会自动使用原版。
 
-Then
+## 使用须知
 
-```shell
-pip install -r requirements.txt
-```
+1. 禁止将此项目用于任何非法和不道德的行为，所造成的任何后果由使用者承担。<br/>
+   且不建议将此项目用于商业用途，如遇纠纷及其他不良后果请贩卖者自行承担。
+2. 如需二次开发，请遵守 AGPLv3 协议 (详见 开源许可.md)，并明确标注版权信息和出处。<br/>
+   如果出于规避 AGPLv3 协议等目的需要仿制/重制本项目，请遵循白盒净室开发流程，并注明参考资料出处。
 
-The Last Step 
+## 关于项目
 
-```shell
-python3 main.py
-```
+1. 本项目的开发目的是研究 ZXIC 路由的固件格式，并希望为爱好者学习提供便利。
+2. 目前仅确认支持 ZX7520v3 芯片平台的固件，其他固件格式可能存在差异，请自行研究。
+3. OpenZxicEditor 现已完全由社区独立维护。即日起不再通过第三方渠道发布。
+4. 欢迎各位用户和开发者提出建议，协助完善本项目。
 
-## Notice
+## 特别声明
 
-1. The tool's designed for debug, do not use it on Illegal ways!
-
+此Python仿制版本是偶然产物，可能并不会及时与Lua版本同步更新。<br>
+不提供对此分支的技术支持，若出现任何使用上的问题请自行探索解决方法。
